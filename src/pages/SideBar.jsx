@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -6,13 +5,6 @@ import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -32,8 +24,12 @@ import '../../src/styles/SideBar.css';
 import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import ProductMainPage from '../jsx/ProductMainPage';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+
 
 const drawerWidth = 240;
+
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -142,6 +138,32 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function MiniDrawer() {
+
+    /////////
+    const [data, setData] = useState([]);
+    const [filterData,setfilterData]= useState('');
+
+    useEffect(() => {
+        callData();
+    }, [])
+
+    const callData = () => {
+        axios.get(`https://fakestoreapi.com/products`)
+            .then(res => {
+                console.log(res.data)
+                setData(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+ const filtermydata = data.filter((items)=>
+ items.title.toLowerCase().includes(filterData.toLowerCase())
+ )
+
+/////////
+
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
@@ -251,6 +273,8 @@ export default function MiniDrawer() {
         </Menu>
     );
 
+
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -275,7 +299,7 @@ export default function MiniDrawer() {
                             component="div"
                             sx={{ display: { xs: 'none', sm: 'block' } }}
                         >
-                            MUI
+                            E-com
                         </Typography>
                         <Search>
                             <SearchIconWrapper>
@@ -284,6 +308,7 @@ export default function MiniDrawer() {
                             <StyledInputBase
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
+                                onChange={(e)=>setfilterData(e.target.value)}
                             />
                         </Search>
                         <Box sx={{ flexGrow: 1 }} />
@@ -345,33 +370,28 @@ export default function MiniDrawer() {
                     <span><div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" />
                         <label className="form-check-label">
-                            Default checkbox
+                        men's clothing
                         </label>
                     </div></span>
                     <span><div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" />
                         <label className="form-check-label">
-                            Default checkbox
+                        jewelery
                         </label>
                     </div></span>
                     <span><div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" />
                         <label className="form-check-label">
-                            Default checkbox
+                        electronics
                         </label>
                     </div></span>
                     <span><div className="form-check">
                         <input className="form-check-input" type="checkbox" value="" />
                         <label className="form-check-label">
-                            Default checkbox
+                        women's clothing
                         </label>
                     </div></span>
-                    <span><div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" />
-                        <label className="form-check-label">
-                            Default checkbox
-                        </label>
-                    </div></span>
+                    
                     <Button variant="contained" className='mt-3 filterButton'>Filter</Button>
                 </div>
 
@@ -388,7 +408,9 @@ export default function MiniDrawer() {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                 <Typography paragraph>
-                  <ProductMainPage/>
+
+                  <ProductMainPage data={data} filtermydata={filtermydata} />
+
                 </Typography>
                 
             </Box>
