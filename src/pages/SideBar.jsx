@@ -26,7 +26,10 @@ import Slider from '@mui/material/Slider';
 import ProductMainPage from '../jsx/ProductMainPage';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { contextData } from '../context/ContextStore';
 
 const drawerWidth = 240;
 
@@ -139,41 +142,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function MiniDrawer() {
 
-    /////////
-    const [data, setData] = useState([]);
-    const [filterData,setfilterData]= useState('');
+    const Navigate = useNavigate()
 
-    useEffect(() => {
-        callData();
-    }, [])
+    const { 
+        setFilterData,
+        handleCategoryChange,
+        filterDataWich,
+        selectedCategories } = useContext(contextData);
 
-    const callData = () => {
-        axios.get(`https://fakestoreapi.com/products`)
-            .then(res => {
-                console.log(res.data)
-                setData(res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
 
- const filtermydata = data.filter((items)=>
- items.title.toLowerCase().includes(filterData.toLowerCase())
- )
 
-/////////
-
-    const theme = useTheme();
     const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(true);
-    };
 
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -308,26 +292,28 @@ export default function MiniDrawer() {
                             <StyledInputBase
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
-                                onChange={(e)=>setfilterData(e.target.value)}
+                                onChange={(e) => setFilterData(e.target.value)}
                             />
                         </Search>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                            {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                                 <Badge badgeContent={4} color="error">
                                     <MailIcon />
                                 </Badge>
-                            </IconButton>
+                            </IconButton> */}
                             <IconButton
                                 size="large"
                                 aria-label="show 17 new notifications"
                                 color="inherit"
+                                onClick={() => Navigate('/add-cart')}
                             >
+
                                 <Badge badgeContent={17} color="error">
-                                    <NotificationsIcon />
+                                    <AddShoppingCartIcon />
                                 </Badge>
                             </IconButton>
-                            <IconButton
+                            {/* <IconButton
                                 size="large"
                                 edge="end"
                                 aria-label="account of current user"
@@ -337,9 +323,9 @@ export default function MiniDrawer() {
                                 color="inherit"
                             >
                                 <AccountCircle />
-                            </IconButton>
+                            </IconButton> */}
                         </Box>
-                        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                        {/* <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
                                 size="large"
                                 aria-label="show more"
@@ -350,7 +336,7 @@ export default function MiniDrawer() {
                             >
                                 <MoreIcon />
                             </IconButton>
-                        </Box>
+                        </Box> */}
                     </Toolbar>
                 </AppBar>
                 {renderMobileMenu}
@@ -367,32 +353,90 @@ export default function MiniDrawer() {
                 <center className='mt-4'><ProductionQuantityLimitsIcon /> Select Product Category</center>
 
                 <div className='mt-3 checks'>
+                    <span>
+                        <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value="smartphones"
+                                id="flexCheckSmartphones"
+                                onChange={() => handleCategoryChange('smartphones')}
+                                checked={selectedCategories.includes('smartphones')}
+                            />
+                            <label className="form-check-label" htmlFor="flexCheckSmartphones">
+                                Smartphones
+                            </label>
+                        </div></span>
                     <span><div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" />
-                        <label className="form-check-label">
-                        men's clothing
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value="laptops"
+                            id="flexCheckLaptops"
+                            onChange={() => handleCategoryChange('laptops')}
+                            checked={selectedCategories.includes('laptops')}
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckLaptops">
+                            Laptops
                         </label>
                     </div></span>
                     <span><div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" />
-                        <label className="form-check-label">
-                        jewelery
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value="fragrances"
+                            id="flexCheckFragrances"
+                            onChange={() => handleCategoryChange('fragrances')}
+                            checked={selectedCategories.includes('fragrances')}
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckFragrances">
+                            Fragrances
                         </label>
                     </div></span>
                     <span><div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" />
-                        <label className="form-check-label">
-                        electronics
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value="skincare"
+                            id="skincare"
+                            onChange={() => handleCategoryChange('skincare')}
+                            checked={selectedCategories.includes('skincare')}
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckFragrances">
+                            skincare
                         </label>
                     </div></span>
-                    <span><div className="form-check">
-                        <input className="form-check-input" type="checkbox" value="" />
-                        <label className="form-check-label">
-                        women's clothing
+
+                    <div className="form-check">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value="groceries"
+                            id="groceries"
+                            onChange={() => handleCategoryChange('groceries')}
+                            checked={selectedCategories.includes('groceries')}
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckFragrances">
+                            groceries
                         </label>
-                    </div></span>
-                    
-                    <Button variant="contained" className='mt-3 filterButton'>Filter</Button>
+                    </div>
+
+                    <div className="form-check">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value="home-decoration"
+                            id="home-decoration"
+                            onChange={() => handleCategoryChange('home-decoration')}
+                            checked={selectedCategories.includes('home-decoration')}
+                        />
+                        <label className="form-check-label" htmlFor="flexCheckFragrances">
+                            home-decoration
+                        </label>
+                    </div>
+
+
+                    {/* <Button variant="contained" className='mt-3 filterButton' onClick={filterDataWich}>Filter</Button> */}
                 </div>
 
                 <Divider />
@@ -409,10 +453,10 @@ export default function MiniDrawer() {
                 <DrawerHeader />
                 <Typography paragraph>
 
-                  <ProductMainPage data={data} filtermydata={filtermydata} />
+
 
                 </Typography>
-                
+
             </Box>
         </Box>
     );
