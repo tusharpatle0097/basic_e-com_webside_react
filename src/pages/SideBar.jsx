@@ -144,7 +144,7 @@ export default function MiniDrawer() {
 
     const Navigate = useNavigate()
 
-    const { 
+    const {
         setFilterData,
         handleCategoryChange,
         filterDataWich,
@@ -440,23 +440,11 @@ export default function MiniDrawer() {
                 </div>
 
                 <Divider />
-                <List className='mt-3'>
-                    <center>
-                        <div>Price Range</div>      </center>
-                    <Box sx={{ width: 300 }}>
-                        <Slider defaultValue={50} aria-label="Default" valueLabelDisplay="auto" style={{ width: "70%" }} />
-                    </Box>
-
-                </List>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
                 <Typography paragraph>
-
-
-
                 </Typography>
-
             </Box>
         </Box>
     );

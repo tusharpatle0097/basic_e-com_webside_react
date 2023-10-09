@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
-
 export const contextData = createContext(null);
 
 const ContextStore = (props) => {
@@ -11,7 +10,7 @@ const ContextStore = (props) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  },[]);
 
   useEffect(() => {
     filterDataWich();
@@ -27,6 +26,8 @@ const ContextStore = (props) => {
         console.log(err);
       });
   }
+
+ 
 
   const filtermydata = fetchData.filter((item) =>
     item.title.toLowerCase().includes(filterData.toLowerCase())
@@ -56,7 +57,7 @@ const ContextStore = (props) => {
     filtermydata,
     setFilterData,
     handleCategoryChange,
-    selectedCategories
+    selectedCategories,
   };
 
   return (

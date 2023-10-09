@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AddtoCard from '../jsx/AddtoCard';
 import ProductMainPage from '../jsx/ProductMainPage';
 import ContextStore from '../context/ContextStore';
+import Details from '../jsx/Details';
 
 const Routing = () => {
 
@@ -14,6 +15,7 @@ const Routing = () => {
                     <Routes>
                         <Route exact path='/' element={<ProductMainPage />}></Route>
                         <Route path='/add-cart' element={<AddtoCard />}></Route>
+                        <Route path='/product-details/:id' element={<Details />}></Route>
                     </Routes>
                 </BrowserRouter>
             </ContextStore>

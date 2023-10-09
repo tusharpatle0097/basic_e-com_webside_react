@@ -6,7 +6,6 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -14,9 +13,13 @@ import { styled } from '@mui/material/styles';
 import SideBar from '../pages/SideBar'
 import { useContext } from 'react';
 import { contextData } from '../context/ContextStore';
+import { Link } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 
 const ProductMainPage = () => {
+
 
     const { filtermydata } = useContext(contextData);
 
@@ -26,12 +29,8 @@ const ProductMainPage = () => {
         alignItems: 'center',
         justifyContent: 'flex-end',
         padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
         ...theme.mixins.toolbar,
     }));
-
-
-
 
     return (
         <>
@@ -39,6 +38,8 @@ const ProductMainPage = () => {
                 <SideBar />
                 <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
                     <DrawerHeader />
+                    <Typography>
+                    </Typography>
                     <Grid container spacing={2}>
                         {
                             filtermydata.map((items, index) => {
@@ -68,12 +69,10 @@ const ProductMainPage = () => {
                                                 <IconButton aria-label="add to favorites">
                                                     <FavoriteIcon />
                                                 </IconButton>
-                                                <IconButton aria-label="share">
-                                                    <ShareIcon />
-                                                </IconButton>
-                                                <Button variant="contained" color="success" className='ms-3' >Add to cart</Button>
-
-
+                                                <div className='d-flex gap-2'>
+                                                    <Button variant="contained" color="success" >Add to cart</Button>
+                                                    <Link to={'/product-details/' + items.id}> <Button variant="outlined" color="error" > Details</Button></Link>
+                                                </div>
                                             </CardActions>
 
                                         </Card>
@@ -81,10 +80,12 @@ const ProductMainPage = () => {
                                 )
                             })
                         }
-
-
-
                     </Grid>
+                    <Stack spacing={2} className='mt-4 float-right'>
+                        <Pagination count={10}
+                            color="primary"
+                        />
+                    </Stack>
                 </Box>
             </Box>
         </>
